@@ -30,7 +30,7 @@ VAL_TOTAL = int(TRAIN_TOTAL * 0.2)
 
 # Set Streamlit page config and force light theme
 st.set_page_config(
-    page_title="FractureFlow AI v2.0",
+    page_title="Bone Fracture Detection using CNN",
     layout="wide",
     initial_sidebar_state="expanded",
     page_icon="🦴"
