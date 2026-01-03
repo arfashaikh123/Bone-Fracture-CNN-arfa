@@ -28,12 +28,20 @@ TEST_NOT_FRACTURED = 240
 CLASSES = ['fractured', 'not_fractured']
 VAL_TOTAL = int(TRAIN_TOTAL * 0.2)
 
-# Set Streamlit page config
+# Set Streamlit page config and force light theme
 st.set_page_config(
     page_title="FractureFlow AI v2.0",
     layout="wide",
     initial_sidebar_state="expanded",
-    page_icon="🦴"
+    page_icon="🦴",
+    theme={
+        "base": "light",
+        "primaryColor": CLR_ACCENT,
+        "backgroundColor": CLR_BG,
+        "secondaryBackgroundColor": CLR_CARD,
+        "textColor": "#000000",
+        "font": "sans serif"
+    }
 )
 
 
@@ -218,7 +226,7 @@ def model_details():
         st.markdown(f"""
             <div class='card' style='display:flex;justify-content:space-between;align-items:center;'>
                 <span style='color:{CLR_ACCENT2};font-weight:bold;font-size:1.1em;'>{label}</span>
-                <span style='color:{CLR_TEXT};font-size:1.1em;'>{val}</span>
+                <span style='color:#000000;font-size:1.1em;'>{val}</span>
             </div>
         """, unsafe_allow_html=True)
 
