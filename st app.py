@@ -192,7 +192,7 @@ def scanner():
                     f"File: {uploaded_file.name}\n"
                     f"Image size: {img_raw.size[0]}x{img_raw.size[1]} (original), {IMG_SIZE[0]}x{IMG_SIZE[1]} (model input)"
                 )
-                st.markdown(f"<div class='card'><pre style='color:#000000;background:{CLR_CARD};border-radius:10px;padding:10px;margin-bottom:0;'>{details}</pre></div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='card'><pre style='color:black;background:{CLR_CARD};border-radius:10px;padding:10px;margin-bottom:0;'>{details}</pre></div>", unsafe_allow_html=True)
                 if pred > 0.5:
                     st.success(f"NEGATIVE ({pred*100:.1f}%)", icon="✅")
                     st.progress(float(pred), text=f"Confidence: <span style='color:{CLR_TEXT};'>{{:.1f}}% Not Fractured</span>".format(float(pred)*100))
