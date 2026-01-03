@@ -36,7 +36,8 @@ st.set_page_config(
     page_icon="🦴"
 )
 
-# Custom CSS for X-ray theme
+
+# Custom CSS for X-ray theme (improved)
 st.markdown(f"""
     <style>
     .stApp {{
@@ -46,14 +47,39 @@ st.markdown(f"""
         padding-top: 2rem;
         padding-bottom: 2rem;
     }}
+    .card {{
+        background: {CLR_CARD};
+        border-radius: 16px;
+        padding: 1.5rem 1.5rem 1.2rem 1.5rem;
+        margin-bottom: 1.2rem;
+        box-shadow: 0 2px 8px #e3f0ff44;
+    }}
+    .stat-title {{
+        color: {CLR_ACCENT2};
+        font-weight: bold;
+        font-size: 1.1em;
+    }}
+    .stat-value {{
+        color: {CLR_TEXT};
+        font-size: 2.1em;
+        font-weight: bold;
+    }}
+    .stat-desc {{
+        color: {CLR_SUBTLE};
+        font-size: 0.95em;
+    }}
     </style>
 """, unsafe_allow_html=True)
 
-# Sidebar
-st.sidebar.markdown(f"<h2 style='color:{CLR_ACCENT};'>FRACTURE FLOW</h2>", unsafe_allow_html=True)
-st.sidebar.markdown(f"<span style='color:{CLR_SUBTLE};'>Diagnostic Suite</span>", unsafe_allow_html=True)
-page = st.sidebar.radio("Navigation", ["Dashboard", "X-ray Scanner", "System Specs"])
-st.sidebar.markdown(f"<hr><span style='color:{CLR_SUBTLE};'>&copy; 2026 XrayAI</span>", unsafe_allow_html=True)
+
+# Sidebar (improved)
+with st.sidebar:
+    st.markdown(f"<h2 style='color:{CLR_ACCENT};margin-bottom:0.2em;'>🦴 FRACTURE FLOW</h2>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:{CLR_SUBTLE};font-size:1.1em;'>Diagnostic Suite</span>", unsafe_allow_html=True)
+    st.markdown("---")
+    page = st.radio("Navigation", ["Dashboard", "X-ray Scanner", "System Specs"],
+                   label_visibility="collapsed")
+    st.markdown(f"<div style='margin-top:2em;color:{CLR_SUBTLE};font-size:0.95em;'>&copy; 2026 XrayAI</div>", unsafe_allow_html=True)
 
 # Load Model
 @st.cache_resource
@@ -66,99 +92,121 @@ def load_model():
         return None
 model = load_model()
 
+
 def dashboard():
-    st.markdown(f"<h1 style='color:{CLR_ACCENT};'>Clinical Dashboard</h1>", unsafe_allow_html=True)
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown(f"<div style='background-color:{CLR_CARD};border-radius:15px;padding:20px;text-align:center;'>"
-                    f"<span style='color:{CLR_SUCCESS};font-weight:bold;'>Test Accuracy</span><br>"
-                    f"<span style='font-size:2em;color:{CLR_TEXT};'>95.0%</span><br>"
-                    f"<span style='color:{CLR_SUBTLE};font-size:0.9em;'>Performance of the model on unseen X-ray images.</span>"
-                    f"</div>", unsafe_allow_html=True)
-    with col2:
-        st.markdown(f"<div style='background-color:{CLR_CARD};border-radius:15px;padding:20px;text-align:center;'>"
-                    f"<span style='color:{CLR_ACCENT2};font-weight:bold;'>Training Accuracy</span><br>"
-                    f"<span style='font-size:2em;color:{CLR_TEXT};'>91.5%</span><br>"
-                    f"<span style='color:{CLR_SUBTLE};font-size:0.9em;'>Accuracy achieved during model training.</span>"
-                    f"</div>", unsafe_allow_html=True)
-    with col3:
-        st.markdown(f"<div style='background-color:{CLR_CARD};border-radius:15px;padding:20px;text-align:center;'>"
-                    f"<span style='color:{CLR_DANGER};font-weight:bold;'>Validation Loss</span><br>"
-                    f"<span style='font-size:2em;color:{CLR_TEXT};'>1.96</span><br>"
-                    f"<span style='color:{CLR_SUBTLE};font-size:0.9em;'>Indicates overfitting if much higher than training loss.</span>"
-                    f"</div>", unsafe_allow_html=True)
-    with col4:
-        st.markdown(f"<div style='background-color:{CLR_CARD};border-radius:15px;padding:20px;text-align:center;'>"
-                    f"<span style='color:{CLR_WARNING};font-weight:bold;'>Latency</span><br>"
-                    f"<span style='font-size:2em;color:{CLR_TEXT};'>120ms</span><br>"
-                    f"<span style='color:{CLR_SUBTLE};font-size:0.9em;'>Average time to analyze an X-ray.</span>"
-                    f"</div>", unsafe_allow_html=True)
+    st.markdown(f"<h1 style='color:{CLR_ACCENT};margin-bottom:0.5em;'>Clinical Dashboard</h1>", unsafe_allow_html=True)
+    with st.container():
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.markdown(f"""
+                <div class='card' style='text-align:center;'>
+                    <div class='stat-title' style='color:{CLR_SUCCESS};'>Test Accuracy</div>
+                    <div class='stat-value'>95.0%</div>
+                    <div class='stat-desc'>Performance of the model on unseen X-ray images.</div>
+                </div>
+            """, unsafe_allow_html=True)
+        with col2:
+            st.markdown(f"""
+                <div class='card' style='text-align:center;'>
+                    <div class='stat-title' style='color:{CLR_ACCENT2};'>Training Accuracy</div>
+                    <div class='stat-value'>91.5%</div>
+                    <div class='stat-desc'>Accuracy achieved during model training.</div>
+                </div>
+            """, unsafe_allow_html=True)
+        with col3:
+            st.markdown(f"""
+                <div class='card' style='text-align:center;'>
+                    <div class='stat-title' style='color:{CLR_DANGER};'>Validation Loss</div>
+                    <div class='stat-value'>1.96</div>
+                    <div class='stat-desc'>Indicates overfitting if much higher than training loss.</div>
+                </div>
+            """, unsafe_allow_html=True)
+        with col4:
+            st.markdown(f"""
+                <div class='card' style='text-align:center;'>
+                    <div class='stat-title' style='color:{CLR_WARNING};'>Latency</div>
+                    <div class='stat-value'>120ms</div>
+                    <div class='stat-desc'>Average time to analyze an X-ray.</div>
+                </div>
+            """, unsafe_allow_html=True)
 
-    st.markdown(f"<div style='background-color:{CLR_CARD};border-radius:15px;padding:20px;margin-top:20px;'>"
-                f"<h3 style='color:{CLR_ACCENT};'>Model Overview</h3>"
-                f"<span style='color:{CLR_TEXT};font-size:1.1em;'>"
-                f"• CNN with 3 Conv layers, 1 Dense, Dropout<br>"
-                f"• Input: 180x180 RGB X-ray<br>"
-                f"• Augmentation: Shear, Zoom, Flip<br>"
-                f"• Optimizer: Adam (1e-4) | Loss: Binary Cross-entropy"
-                f"</span></div>", unsafe_allow_html=True)
+    with st.container():
+        st.markdown(f"""
+            <div class='card'>
+                <h3 style='color:{CLR_ACCENT};margin-bottom:0.5em;'>Model Overview</h3>
+                <span style='color:{CLR_TEXT};font-size:1.1em;'>
+                • CNN with 3 Conv layers, 1 Dense, Dropout<br>
+                • Input: 180x180 RGB X-ray<br>
+                • Augmentation: Shear, Zoom, Flip<br>
+                • Optimizer: Adam (1e-4) | Loss: Binary Cross-entropy
+                </span>
+            </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown(f"<div style='background-color:{CLR_CARD};border-radius:15px;padding:20px;margin-top:20px;'>"
-                f"<h3 style='color:{CLR_ACCENT2};'>Dataset Summary</h3>"
-                f"<span style='color:{CLR_TEXT};font-size:1.1em;'>"
-                f"• Training images: {TRAIN_TOTAL}<br>"
-                f"&nbsp;&nbsp;&nbsp;&nbsp;- fractured: {TRAIN_FRACTURED}<br>"
-                f"&nbsp;&nbsp;&nbsp;&nbsp;- not_fractured: {TRAIN_NOT_FRACTURED}<br>"
-                f"• Validation (est.): {VAL_TOTAL}<br>"
-                f"• Test images: {TEST_TOTAL}<br>"
-                f"&nbsp;&nbsp;&nbsp;&nbsp;- fractured: {TEST_FRACTURED}<br>"
-                f"&nbsp;&nbsp;&nbsp;&nbsp;- not_fractured: {TEST_NOT_FRACTURED}<br>"
-                f"• Classes: {', '.join(CLASSES)}"
-                f"</span></div>", unsafe_allow_html=True)
+    with st.container():
+        st.markdown(f"""
+            <div class='card'>
+                <h3 style='color:{CLR_ACCENT2};margin-bottom:0.5em;'>Dataset Summary</h3>
+                <span style='color:{CLR_TEXT};font-size:1.1em;'>
+                • Training images: {TRAIN_TOTAL}<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;- fractured: {TRAIN_FRACTURED}<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;- not_fractured: {TRAIN_NOT_FRACTURED}<br>
+                • Validation (est.): {VAL_TOTAL}<br>
+                • Test images: {TEST_TOTAL}<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;- fractured: {TEST_FRACTURED}<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;- not_fractured: {TEST_NOT_FRACTURED}<br>
+                • Classes: {', '.join(CLASSES)}
+                </span>
+            </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown(f"<h4 style='color:{CLR_ACCENT};margin-top:30px;'>Instructions:</h4>"
-                f"<span style='color:{CLR_TEXT};font-size:1.1em;'>"
-                f"1. Use the X-ray Scanner to upload and analyze images.<br>"
-                f"2. Review model details and system specs for transparency.<br>"
-                f"3. For best results, use clear, high-resolution X-rays."
-                f"</span>", unsafe_allow_html=True)
+    with st.container():
+        st.markdown(f"<h4 style='color:{CLR_ACCENT};margin-top:1.5em;'>Instructions:</h4>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:{CLR_TEXT};font-size:1.1em;'>"
+                    "1. Use the X-ray Scanner to upload and analyze images.<br>"
+                    "2. Review model details and system specs for transparency.<br>"
+                    "3. For best results, use clear, high-resolution X-rays."
+                    "</span>", unsafe_allow_html=True)
+
 
 def scanner():
-    st.markdown(f"<h1 style='color:{CLR_ACCENT};'>X-ray Scanner</h1>", unsafe_allow_html=True)
-    uploaded_file = st.file_uploader("Upload an X-ray image", type=["jpg", "jpeg", "png"])
-    if uploaded_file is not None:
-        img_raw = Image.open(uploaded_file)
-        st.image(img_raw, caption="Uploaded X-ray", width=450)
-        if model:
-            img = img_raw.convert('RGB').resize(IMG_SIZE)
-            img_arr = np.array(img) / 255.0
-            img_arr = np.expand_dims(img_arr, axis=0)
-            pred = model.predict(img_arr)[0][0]
-            pred_percent = pred * 100
-            not_fractured_percent = pred_percent
-            fractured_percent = 100 - pred_percent
-            details = (
-                f"Raw model output: {pred:.6f}\n"
-                f"Probability Not Fractured: {not_fractured_percent:.2f}%\n"
-                f"Probability Fractured: {fractured_percent:.2f}%\n"
-                f"Threshold: 0.5\n"
-                f"File: {uploaded_file.name}\n"
-                f"Image size: {img_raw.size[0]}x{img_raw.size[1]} (original), {IMG_SIZE[0]}x{IMG_SIZE[1]} (model input)"
-            )
-            st.markdown(f"<pre style='color:{CLR_SUBTLE};background:{CLR_CARD};border-radius:10px;padding:10px;'>{details}</pre>", unsafe_allow_html=True)
-            if pred > 0.5:
-                st.success(f"NEGATIVE ({pred*100:.1f}%)")
-                st.progress(pred)
+    st.markdown(f"<h1 style='color:{CLR_ACCENT};margin-bottom:0.5em;'>X-ray Scanner</h1>", unsafe_allow_html=True)
+    with st.container():
+        uploaded_file = st.file_uploader("Upload an X-ray image", type=["jpg", "jpeg", "png"])
+        if uploaded_file is not None:
+            img_raw = Image.open(uploaded_file)
+            st.image(img_raw, caption="Uploaded X-ray", width=450)
+            if model:
+                img = img_raw.convert('RGB').resize(IMG_SIZE)
+                img_arr = np.array(img) / 255.0
+                img_arr = np.expand_dims(img_arr, axis=0)
+                pred = model.predict(img_arr)[0][0]
+                pred_percent = pred * 100
+                not_fractured_percent = pred_percent
+                fractured_percent = 100 - pred_percent
+                details = (
+                    f"Raw model output: {pred:.6f}\n"
+                    f"Probability Not Fractured: {not_fractured_percent:.2f}%\n"
+                    f"Probability Fractured: {fractured_percent:.2f}%\n"
+                    f"Threshold: 0.5\n"
+                    f"File: {uploaded_file.name}\n"
+                    f"Image size: {img_raw.size[0]}x{img_raw.size[1]} (original), {IMG_SIZE[0]}x{IMG_SIZE[1]} (model input)"
+                )
+                st.markdown(f"<div class='card'><pre style='color:{CLR_SUBTLE};background:{CLR_CARD};border-radius:10px;padding:10px;margin-bottom:0;'>{details}</pre></div>", unsafe_allow_html=True)
+                if pred > 0.5:
+                    st.success(f"NEGATIVE ({pred*100:.1f}%)", icon="✅")
+                    st.progress(pred, text="Confidence: {:.1f}% Not Fractured".format(pred*100))
+                else:
+                    st.error(f"FRACTURE DETECTED ({(1-pred)*100:.1f}%)", icon="⚠️")
+                    st.progress(1-pred, text="Confidence: {:.1f}% Fractured".format((1-pred)*100))
             else:
-                st.error(f"FRACTURE DETECTED ({(1-pred)*100:.1f}%)")
-                st.progress(1-pred)
+                st.warning("Model not loaded. Cannot run inference.")
         else:
-            st.warning("Model not loaded. Cannot run inference.")
-    else:
-        st.info("Please upload an X-ray image to analyze.")
+            st.info("Please upload an X-ray image to analyze.")
+
 
 def model_details():
-    st.markdown(f"<h1 style='color:{CLR_ACCENT};'>System Specs</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 style='color:{CLR_ACCENT};margin-bottom:0.5em;'>System Specs</h1>", unsafe_allow_html=True)
     specs = [
         ("Optimizer", "Adam (Learning Rate: 1x10⁻⁴)"),
         ("Loss Function", "Binary Cross-entropy"),
@@ -167,10 +215,12 @@ def model_details():
         ("Validation Loss", "1.96 (Indicates Overfitting)")
     ]
     for label, val in specs:
-        st.markdown(f"<div style='background-color:{CLR_CARD};border-radius:10px;padding:15px;margin-bottom:10px;display:flex;justify-content:space-between;'>"
-                    f"<span style='color:{CLR_ACCENT2};font-weight:bold;'>{label}</span>"
-                    f"<span style='color:{CLR_TEXT};'>{val}</span>"
-                    f"</div>", unsafe_allow_html=True)
+        st.markdown(f"""
+            <div class='card' style='display:flex;justify-content:space-between;align-items:center;'>
+                <span style='color:{CLR_ACCENT2};font-weight:bold;font-size:1.1em;'>{label}</span>
+                <span style='color:{CLR_TEXT};font-size:1.1em;'>{val}</span>
+            </div>
+        """, unsafe_allow_html=True)
 
 if page == "Dashboard":
     dashboard()
