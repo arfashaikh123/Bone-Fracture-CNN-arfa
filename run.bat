@@ -1,2 +1,1 @@
-
-python app.py
+streamlit run st app.py
